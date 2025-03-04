@@ -9,11 +9,13 @@ import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static io.github.falondev.createsweetsnstuff.CreateSweetsNStuff.MOD_ID;
@@ -39,6 +41,11 @@ public enum ChillingRecipeTypes implements IRecipeTypeInfo {
 
         DeferredHolder<RecipeType<?>, RecipeType<?>> typeObject = Registers.TYPE_REGISTER.register(name, () -> RecipeType.simple(id));
         type = typeObject;
+    }
+
+    public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> find(I inv, Level world) {
+        return world.getRecipeManager()
+                .getRecipeFor(getType(), inv, world);
     }
 
     @Override

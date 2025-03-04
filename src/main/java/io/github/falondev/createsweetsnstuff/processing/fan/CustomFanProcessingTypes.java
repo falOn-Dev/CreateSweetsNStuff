@@ -1,10 +1,12 @@
 package io.github.falondev.createsweetsnstuff.processing.fan;
 
+import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.Create;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.kinetics.fan.processing.AllFanProcessingTypes;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessingType;
+import com.simibubi.create.foundation.recipe.RecipeApplier;
 import io.github.falondev.createsweetsnstuff.CreateSweetsNStuff;
 import io.github.falondev.createsweetsnstuff.tags.ModTags;
 import net.minecraft.core.BlockPos;
@@ -15,21 +17,23 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import static io.github.falondev.createsweetsnstuff.CreateSweetsNStuff.LOGGER;
 import static io.github.falondev.createsweetsnstuff.CreateSweetsNStuff.MOD_ID;
 
-public class CustomFanProcessingTypes extends AllFanProcessingTypes  {
+public class CustomFanProcessingTypes {
 
     public static final DeferredRegister<FanProcessingType> FAN_PROCESSING_TYPE = DeferredRegister.create(CreateRegistries.FAN_PROCESSING_TYPE, MOD_ID);
 
@@ -40,6 +44,7 @@ public class CustomFanProcessingTypes extends AllFanProcessingTypes  {
     }
 
     public static class ChillingType implements FanProcessingType {
+
 
         @Override
         public boolean isValidAt(Level level, BlockPos pos) {
@@ -53,19 +58,19 @@ public class CustomFanProcessingTypes extends AllFanProcessingTypes  {
 
         @Override
         public boolean canProcess(ItemStack stack, Level level) {
-            return true;
+            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeTypes.CHILLING.find(new SingleRecipeInput(stack), level);
+            if(recipe.isPresent()) {
+                LOGGER.info("Found recipe for " + stack);
+            } else {
+                LOGGER.info("No recipe found for " + stack);
+            }
+            return recipe.isPresent();
         }
 
         @Override
         public @Nullable List<ItemStack> process(ItemStack stack, Level level) {
-            ArrayList<ItemStack> arr = new ArrayList<>();
-
-            if(stack.is(Items.ICE)) {
-                arr.add(new ItemStack(Items.PACKED_ICE, stack.getCount()));
-                stack.shrink(stack.getCount());
-                return arr;
-            }
-            return Collections.emptyList();
+            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeTypes.CHILLING.find(new SingleRecipeInput(stack), level);
+            return recipe.map(recipeRecipeHolder -> RecipeApplier.applyRecipeOn(level, stack, recipeRecipeHolder)).orElse(null);
         }
 
         @Override
