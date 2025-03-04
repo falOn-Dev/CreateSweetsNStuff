@@ -1,6 +1,10 @@
 package io.github.falondev.createsweetsnstuff;
 
+import com.simibubi.create.api.registry.CreateRegistries;
 import io.github.falondev.createsweetsnstuff.item.ModItems;
+import io.github.falondev.createsweetsnstuff.processing.fan.ChillingRecipeTypes;
+import io.github.falondev.createsweetsnstuff.processing.fan.CustomFanProcessingTypes;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -26,7 +30,7 @@ public class CreateSweetsNStuff {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "createsweetsnstuff";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -40,6 +44,9 @@ public class CreateSweetsNStuff {
         NeoForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+        CustomFanProcessingTypes.register(modEventBus);
+        ChillingRecipeTypes.register(modEventBus);
+
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -50,6 +57,10 @@ public class CreateSweetsNStuff {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
 
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     // Add the example block item to the building blocks tab
