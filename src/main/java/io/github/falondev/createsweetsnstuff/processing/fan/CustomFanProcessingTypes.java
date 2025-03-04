@@ -58,7 +58,7 @@ public class CustomFanProcessingTypes {
 
         @Override
         public boolean canProcess(ItemStack stack, Level level) {
-            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeTypes.CHILLING.find(new SingleRecipeInput(stack), level);
+            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeType.find(new SingleRecipeInput(stack), level);
             if(recipe.isPresent()) {
                 LOGGER.info("Found recipe for " + stack);
             } else {
@@ -69,7 +69,7 @@ public class CustomFanProcessingTypes {
 
         @Override
         public @Nullable List<ItemStack> process(ItemStack stack, Level level) {
-            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeTypes.CHILLING.find(new SingleRecipeInput(stack), level);
+            Optional<RecipeHolder<Recipe<SingleRecipeInput>>> recipe = ChillingRecipeType.find(new SingleRecipeInput(stack), level);
             return recipe.map(recipeRecipeHolder -> RecipeApplier.applyRecipeOn(level, stack, recipeRecipeHolder)).orElse(null);
         }
 

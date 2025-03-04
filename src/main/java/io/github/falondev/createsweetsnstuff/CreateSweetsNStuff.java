@@ -1,8 +1,7 @@
 package io.github.falondev.createsweetsnstuff;
 
-import com.simibubi.create.api.registry.CreateRegistries;
 import io.github.falondev.createsweetsnstuff.item.ModItems;
-import io.github.falondev.createsweetsnstuff.processing.fan.ChillingRecipeTypes;
+import io.github.falondev.createsweetsnstuff.processing.fan.ChillingRecipeType;
 import io.github.falondev.createsweetsnstuff.processing.fan.CustomFanProcessingTypes;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class CreateSweetsNStuff {
 
         ModItems.register(modEventBus);
         CustomFanProcessingTypes.register(modEventBus);
-        ChillingRecipeTypes.register(modEventBus);
+        ChillingRecipeType.register(modEventBus);
 
 
         // Register the item to a creative tab

@@ -10,7 +10,7 @@ import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 public class ChillingRecipe extends ProcessingRecipe<ChillingRecipe.ChillingWrapper> {
     public ChillingRecipe(ProcessingRecipeBuilder.ProcessingRecipeParams params) {
-        super(ChillingRecipeTypes.CHILLING, params);
+        super(ChillingRecipeType.CHILLING_TYPE_INFO, params);
     }
 
     @Override
