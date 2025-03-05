@@ -37,14 +37,9 @@ public class ChillingRecipeType {
         TYPE_REGISTER.register(modEventBus);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
-        return (RecipeType<R>) CHILLING_TYPE.get();
-    }
-
 
     public static <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> find(I inv, Level world) {
         return world.getRecipeManager()
-                .getRecipeFor(getType(), inv, world);
+                .getRecipeFor(CHILLING_TYPE_INFO.getType(), inv, world);
     }
 }
